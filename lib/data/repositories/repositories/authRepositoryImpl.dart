@@ -3,7 +3,8 @@ import 'package:e_commerece_online_c13/core/errors/failures.dart';
 import 'package:e_commerece_online_c13/domain/entities/RegisterResponseEntity.dart';
 import 'package:e_commerece_online_c13/domain/repositories/dataSourses/remoteDataSource/auth_remote_data_Source.dart';
 import 'package:e_commerece_online_c13/domain/repositories/repositories/auth_repositories.dart';
-
+import 'package:injectable/injectable.dart';
+ @Injectable(as: AuthRepositories)
  class AuthRepositoryImpl implements AuthRepositories {
   AuthRemoteDataSource authRemoteDataSource;
   AuthRepositoryImpl({required this.authRemoteDataSource});
