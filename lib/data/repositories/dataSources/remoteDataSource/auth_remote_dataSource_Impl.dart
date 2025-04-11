@@ -3,7 +3,9 @@ import 'package:dartz/dartz.dart';
 import 'package:e_commerece_online_c13/core/api/api_manager.dart';
 import 'package:e_commerece_online_c13/core/api/end_points.dart';
 import 'package:e_commerece_online_c13/core/errors/failures.dart';
+import 'package:e_commerece_online_c13/data/models/LoginResponseDM.dart';
 import 'package:e_commerece_online_c13/data/models/RegisterResponseDM.dart';
+import 'package:e_commerece_online_c13/domain/entities/LoginResponseEntity.dart';
 import 'package:e_commerece_online_c13/domain/entities/RegisterResponseEntity.dart';
 import 'package:e_commerece_online_c13/domain/repositories/dataSourses/remoteDataSource/auth_remote_data_Source.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +14,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource{
   ApiManager apiManager;
   AuthRemoteDataSourceImpl({required this.apiManager});
   @override
-  Future<Either<Failures, RegisterResponseEntity>> register(String name, String email, String password, String rePassword, String phone)async {
+  Future<Either<Failures, RegisterResponseDm>> register(String name, String email, String password, String rePassword, String phone)async {
   var response=await  apiManager.postData(endPoint: EndPoints.signUp,body: {
      "name": name,
      "email":email,
@@ -40,5 +42,30 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource{
     return Left(ServerError(errorMsg: e.toString()));
  }
   }
-  
+  @override
+  Future<Either<Failures, LoginResponseDm>> login(String email, String password) async{
+    var response=await  apiManager.postData(endPoint: EndPoints.signIn,body: {
+      "email":email,
+      "password":password,
+    });
+    try{
+      final List<ConnectivityResult> connectivityResult=await Connectivity().checkConnectivity();
+      if(connectivityResult.contains(ConnectivityResult.wifi)||connectivityResult.contains(ConnectivityResult.mobile)){
+        var loginResponse=LoginResponseDm.fromJson(response.data);//convert response to object
+        if(response.statusCode!>=200&&response.statusCode!<300){
+          return Right(loginResponse);
+        }
+        else{
+          return Left(ServerError(errorMsg: loginResponse.message!));
+        }
+      }
+      else{
+        // todo no internet connection
+        return left(NetworkError(errorMsg: 'No Internet Connection ,Please Check Internet'));
+      }
+    }
+    catch(e){
+      return Left(Failures(errorMsg: e.toString()));
+    }
+  }
 }
