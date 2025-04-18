@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:e_commerece_online_c13/core/cached/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/utils/app_routes.dart';
@@ -11,14 +12,27 @@ import 'features/ui/pages/cart_screen/cart_screen.dart';
 import 'features/ui/pages/home_screen/home_screen.dart';
 import 'features/ui/pages/product_details_screen/product_details_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-
   configureDependencies();
-  runApp(MyApp());
+  await SharedPrefernceUtlis.init();
+  String routeName;
+  var token=SharedPrefernceUtlis.getData(key: 'token');
+  if(token==null){
+    routeName=AppRoutes.loginRoute;
+
+  }
+  else
+    {
+      routeName=AppRoutes.homeRoute;
+    }
+  runApp(MyApp(routeName: routeName,));
 }
 
 class MyApp extends StatelessWidget {
+   String routeName;
+   MyApp({required this.routeName});
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -28,7 +42,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoutes.homeRoute,
+          initialRoute:routeName,
           routes: {
             AppRoutes.loginRoute: (context) => LoginScreen(),
             AppRoutes.registerRoute: (context) => RegisterScreen(),

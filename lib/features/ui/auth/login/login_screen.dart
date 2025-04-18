@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:e_commerece_online_c13/core/cached/cache_helper.dart';
 import 'package:e_commerece_online_c13/core/utils/dialog_utils.dart';
 import 'package:e_commerece_online_c13/di/di.dart';
 import 'package:e_commerece_online_c13/features/ui/auth/login/cubit/login_states.dart';
@@ -7,6 +8,7 @@ import 'package:e_commerece_online_c13/features/ui/auth/login/cubit/login_view_m
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -20,35 +22,35 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
- LoginViewModel viewModel=getIt<LoginViewModel>();
-
+  LoginViewModel viewModel = getIt<LoginViewModel>();
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginViewModel,LoginStates>(
+    return BlocListener<LoginViewModel, LoginStates>(
       bloc: viewModel,
-      listener: (context,state){
-        if(state is LoginLoadingState){
-            DialogUtils.showMessage(context: context, message: "Waiting......");
-        }
-        else if(state is LoginErrorState){
-       DialogUtils.hideLoading(context);
-       DialogUtils.showMessage(context: context, message: state.errorMessage.errorMsg,
-       title: "error ",
-         posActionName: "OK"
-       );
-        }
-        else if(state is LoginSuccessState){
+      listener: (context, state) {
+        if (state is LoginLoadingState) {
+          DialogUtils.showMessage(context: context, message: "Waiting......");
+        } else if (state is LoginErrorState) {
           DialogUtils.hideLoading(context);
-          DialogUtils.showMessage(context: context, message: "Login Success",
+          DialogUtils.showMessage(
+              context: context,
+              message: state.errorMessage.errorMsg,
+              title: "error ",
+              posActionName: "OK");
+        } else if (state is LoginSuccessState) {
+          DialogUtils.hideLoading(context);
+          DialogUtils.showMessage(
+              context: context,
+              message: "Login Success",
               title: "Success ",
               posActionName: "OK",
-            posAction: (){
-              Navigator.pushReplacementNamed(
-                  context, AppRoutes.homeRoute);
-            }
-          );
+              posAction: () {
+                //todo:save token
+                SharedPrefernceUtlis.saveData(
+                    key: 'token', value: state.responseEntity.token);
+                Navigator.pushReplacementNamed(context, AppRoutes.homeRoute);
+              });
         }
       },
       child: Scaffold(
@@ -132,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     text: "Login",
                                     onPressed: () {
                                       viewModel.login();
-
                                     }),
                               ),
                               Padding(
@@ -168,6 +169,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-
 }

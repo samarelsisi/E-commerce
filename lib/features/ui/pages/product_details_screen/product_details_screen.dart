@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:e_commerece_online_c13/domain/entities/ProductResponseEntity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readmore/readmore.dart';
@@ -28,14 +29,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     Colors.yellow,
   ];
 
-  List<String> productImages = [
-    "https://www.nike.sa/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw42ccc9ea/nk/a9b/7/6/4/b/1/a9b764b1_834c_413e_aec2_f460112b2de6.jpg?sw=2000&sh=2000&sm=fit",
-    "https://www.nike.sa/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw42ccc9ea/nk/a9b/7/6/4/b/1/a9b764b1_834c_413e_aec2_f460112b2de6.jpg?sw=2000&sh=2000&sm=fit",
-    "https://www.nike.sa/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw42ccc9ea/nk/a9b/7/6/4/b/1/a9b764b1_834c_413e_aec2_f460112b2de6.jpg?sw=2000&sh=2000&sm=fit",
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+    var args=ModalRoute.of(context)?.settings.arguments as ProductEntity;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -67,7 +66,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: [
               ProductSlider(
                 initialIndex: 0,
-                items: productImages,
+                items: args.images??[],
               ),
               SizedBox(
                 height: 24.h,
@@ -77,12 +76,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      "title",
+                      args.title??" ",
                       style: AppStyles.medium18Header,
                     ),
                   ),
                   Text(
-                    "EGP 1500",
+                    args.price.toString()??"",
                     style: AppStyles.medium18Header,
                   ),
                 ],
@@ -103,7 +102,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     child: Text(
-                      '3,332 Sold',
+                      '${args.sold} Sold',
                       overflow: TextOverflow.ellipsis,
                       style: AppStyles.medium14PrimaryDark,
                     ),
@@ -120,7 +119,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      "4.8 (7,500)",
+                      "${args.ratingsAverage} (${args.ratingsQuantity})",
                       overflow: TextOverflow.ellipsis,
                       style: AppStyles.regular14Text,
                     ),
@@ -183,7 +182,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     height: 8.h,
                   ),
                   ReadMoreText(
-                    "Nike is a multinational corporation that designs, develops, and sells athletic footwear ,apparel, and accessories sdsdsf sffffffffffffffff fsssssssssssssssssssssssssssssssssssssssssssssssssss",
+                    args.description??"",
                     style: AppStyles.medium14LightPrimary,
                     trimExpandedText: ' Read Less',
                     trimCollapsedText: ' Read More',
@@ -199,92 +198,92 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               SizedBox(
                 height: 16.h,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Size', style: AppStyles.medium18Header),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  SizedBox(
-                    height: 45.h,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = index;
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 22.r,
-                              backgroundColor: index == selectedColor
-                                  ? AppColors.primaryColor
-                                  : Colors.transparent,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 9.w, vertical: 9.h),
-                                child: Text(
-                                  '${sizes[index]}',
-                                  style: AppStyles.regular14Text.copyWith(
-                                      color: index == selectedColor
-                                          ? AppColors.whiteColor
-                                          : AppColors.primaryColor),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) => SizedBox(
-                              width: 17.w,
-                            ),
-                        itemCount: sizes.length),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 24.h,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Color', style: AppStyles.medium18Header),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  SizedBox(
-                    height: 45.h,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedSize = index;
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 20.r,
-                              backgroundColor: color[index],
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    Icons.check,
-                                    color: index == selectedSize
-                                        ? AppColors.whiteColor
-                                        : Colors.transparent,
-                                  )),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) => SizedBox(
-                              width: 17.w,
-                            ),
-                        itemCount: color.length),
-                  ),
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Text('Size', style: AppStyles.medium18Header),
+              //     SizedBox(
+              //       height: 8.h,
+              //     ),
+              //     SizedBox(
+              //       height: 45.h,
+              //       child: ListView.separated(
+              //           scrollDirection: Axis.horizontal,
+              //           itemBuilder: (context, index) {
+              //             return GestureDetector(
+              //               onTap: () {
+              //                 setState(() {
+              //                   selectedColor = index;
+              //                 });
+              //               },
+              //               child: CircleAvatar(
+              //                 radius: 22.r,
+              //                 backgroundColor: index == selectedColor
+              //                     ? AppColors.primaryColor
+              //                     : Colors.transparent,
+              //                 child: Padding(
+              //                   padding: EdgeInsets.symmetric(
+              //                       horizontal: 9.w, vertical: 9.h),
+              //                   child: Text(
+              //                     '${sizes[index]}',
+              //                     style: AppStyles.regular14Text.copyWith(
+              //                         color: index == selectedColor
+              //                             ? AppColors.whiteColor
+              //                             : AppColors.primaryColor),
+              //                   ),
+              //                 ),
+              //               ),
+              //             );
+              //           },
+              //           separatorBuilder: (context, index) => SizedBox(
+              //                 width: 17.w,
+              //               ),
+              //           itemCount: sizes.length),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(
+              //   height: 24.h,
+              // ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Text('Color', style: AppStyles.medium18Header),
+              //     SizedBox(
+              //       height: 8.h,
+              //     ),
+              //     SizedBox(
+              //       height: 45.h,
+              //       child: ListView.separated(
+              //           scrollDirection: Axis.horizontal,
+              //           itemBuilder: (context, index) {
+              //             return GestureDetector(
+              //               onTap: () {
+              //                 setState(() {
+              //                   selectedSize = index;
+              //                 });
+              //               },
+              //               child: CircleAvatar(
+              //                 radius: 20.r,
+              //                 backgroundColor: color[index],
+              //                 child: Align(
+              //                     alignment: Alignment.center,
+              //                     child: Icon(
+              //                       Icons.check,
+              //                       color: index == selectedSize
+              //                           ? AppColors.whiteColor
+              //                           : Colors.transparent,
+              //                     )),
+              //               ),
+              //             );
+              //           },
+              //           separatorBuilder: (context, index) => SizedBox(
+              //                 width: 17.w,
+              //               ),
+              //           itemCount: color.length),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 48.h,
               ),
@@ -300,7 +299,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       SizedBox(
                         height: 12.h,
                       ),
-                      Text('EGP 3,500', style: AppStyles.medium18Header)
+                      Text('EGP ${args.price}', style: AppStyles.medium18Header)
                     ],
                   ),
                   SizedBox(

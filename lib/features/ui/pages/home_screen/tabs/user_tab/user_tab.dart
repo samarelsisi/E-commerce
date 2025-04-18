@@ -1,4 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:e_commerece_online_c13/core/cached/cache_helper.dart';
+import 'package:e_commerece_online_c13/core/utils/app_routes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,9 +41,19 @@ class _UserTabState extends State<UserTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AutoSizeText(
-              "Welcome, Mohamed",
-              style: AppStyles.medium18Header,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AutoSizeText(
+                  "Welcome, Mohamed",
+                  style: AppStyles.medium18Header,
+                ),
+                IconButton(onPressed: (){
+                  SharedPrefernceUtlis.removeData(key: 'token');
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.loginRoute, (route)=>false);
+                  
+                }, icon:Icon(Icons.logout ))
+              ],
             ),
             AutoSizeText(
               "mohamed.N@gmail.com",

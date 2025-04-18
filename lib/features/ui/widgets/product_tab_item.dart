@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerece_online_c13/domain/entities/ProductResponseEntity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,7 +8,8 @@ import '../../../core/utils/app_styles.dart';
 import 'custom_txt.dart';
 
 class ProductTabItem extends StatelessWidget {
-  const ProductTabItem({super.key});
+  ProductEntity product;
+   ProductTabItem({required this.product,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,7 @@ class ProductTabItem extends StatelessWidget {
                   width: 191.w,
                   height: 120.h,
                   fit: BoxFit.cover,
-                  imageUrl:
-                      "https://www.nike.sa/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw42ccc9ea/nk/a9b/7/6/4/b/1/a9b764b1_834c_413e_aec2_f460112b2de6.jpg?sw=2000&sh=2000&sm=fit",
+                  imageUrl:product.imageCover??"",
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(
                       color: AppColors.primaryDark,
@@ -68,22 +69,22 @@ class ProductTabItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomTxt(
-                  text: "Nike Air Jordan",
+                  text: product.title??"",
                   fontSize: 12.sp,
                 ),
                 SizedBox(
                   height: 2.h,
                 ),
                 CustomTxt(
-                  text: "NIKE SHOES FLEXIBLE FOR MEN",
+                  text: product.description??"",
                   fontSize: 12.sp,
                 ),
                 SizedBox(
                   height: 1.h,
                 ),
                 Row(children: [
-                  const CustomTxt(
-                    text: "EGP 1500",
+                   CustomTxt(
+                    text:product.price?.toString()??"" ,
                   ),
                   SizedBox(
                     width: 8.w,
@@ -100,7 +101,7 @@ class ProductTabItem extends StatelessWidget {
                 Row(
                   children: [
                     CustomTxt(
-                      text: "Review (4.8)",
+                      text: product.ratingsAverage.toString()??"",
                       fontSize: 12.sp,
                     ),
                     Icon(
