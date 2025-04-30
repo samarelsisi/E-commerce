@@ -5,7 +5,6 @@ import 'package:e_commerece_online_c13/features/ui/pages/home_screen/tabs/produc
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../../core/utils/app_routes.dart';
 import '../../../../widgets/product_tab_item.dart';
 
@@ -16,8 +15,12 @@ class ProductsTab extends StatelessWidget {
   // @override
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductViewModel, ProductStates>(
+    return BlocConsumer<ProductViewModel, ProductStates>(
+
         bloc: viewModel.. getAllProducts(),
+        listener: (context, state) {
+
+        },
         builder: (context, state) {
           if (state is ProductErrorState) {
             return Center(child: Text(state.errorMessage.errorMsg));

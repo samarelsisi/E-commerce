@@ -1,4 +1,5 @@
 import 'package:e_commerece_online_c13/domain/entities/ProductResponseEntity.dart';
+import 'package:e_commerece_online_c13/domain/usecases/add_cart_usecase.dart';
 
 import 'package:e_commerece_online_c13/domain/usecases/get_all_products_usecase.dart';
 import 'package:e_commerece_online_c13/features/ui/pages/home_screen/tabs/products_tab/cubit/product_states.dart';
@@ -8,10 +9,11 @@ import 'package:injectable/injectable.dart';
 @injectable
 class ProductViewModel extends Cubit<ProductStates> {
   GetAllProductsUseCase getAllProductsUseCase;
+  AddCartUseCase addCartUseCase;
   // AddCartUseCase addCartUseCase;
 
   ProductViewModel(
-      {required this.getAllProductsUseCase, })
+      {required this.getAllProductsUseCase, required this.addCartUseCase})
       :super(ProductInitState());
 
   //todo: hold data - handle logic
@@ -30,17 +32,15 @@ class ProductViewModel extends Cubit<ProductStates> {
       emit(ProductSuccessState(responseEntity: response));
     });
   }
-
-  // void addToCart(String productId) async {
-  //   emit(AddCartLoadingState());
-  //   var either = await addCartUseCase.invoke(productId);
-  //   either.fold((error) {
-  //     emit(AddCartErrorState(failures: error));
-  //   }, (response) {
-  //     numOfCartItem = response.numOfCartItems!.toInt();
-  //     print('numOfCartItem: $numOfCartItem');
-  //     emit(AddCartSuccessState(responseEntity: response));
-  //   });
-  // }
+  void addToCart(String productId) async {
+    emit(AddToCartLoadingState());
+    var either = await addCartUseCase.invoke(productId);
+    either.fold((error) {      emit(AddToCartErrorState(errorMessage: error));
+    }, (response) {
+      numOfCartItem = response.numOfCartItems!.toInt();
+      print('numOfCartItem: $numOfCartItem');
+      emit(AddToCartSuccessState(responseEntity: response));
+    });
+  }
 }
 

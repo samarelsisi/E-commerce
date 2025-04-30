@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:e_commerece_online_c13/core/cached/cache_helper.dart';
+import 'package:e_commerece_online_c13/features/ui/pages/home_screen/tabs/products_tab/cubit/product_viewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/utils/app_routes.dart';
 import 'core/utils/app_theme.dart';
@@ -27,7 +29,11 @@ void main() async {
     {
       routeName=AppRoutes.homeRoute;
     }
-  runApp(MyApp(routeName: routeName,));
+  runApp(MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<ProductViewModel>())
+      ],
+      child: MyApp(routeName: routeName,)));
 }
 
 class MyApp extends StatelessWidget {
@@ -47,7 +53,7 @@ class MyApp extends StatelessWidget {
             AppRoutes.loginRoute: (context) => LoginScreen(),
             AppRoutes.registerRoute: (context) => RegisterScreen(),
             AppRoutes.homeRoute: (context) => const HomeScreen(),
-            AppRoutes.cartRoute: (context) => const CartScreen(),
+            AppRoutes.cartRoute: (context) =>  CartScreen(),
             AppRoutes.productRoute: (context) => ProductDetailsScreen(),
           },
           theme: AppTheme.lightTheme,

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerece_online_c13/domain/entities/GetCartResponeEntity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,15 +8,10 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_routes.dart';
 import 'custom_txt.dart';
 
-class CartItem extends StatefulWidget {
-  const CartItem({super.key});
+class CartItem extends StatelessWidget {
+  GetProductsEntity product;
 
-  @override
-  State<CartItem> createState() => _CartItemState();
-}
-
-class _CartItemState extends State<CartItem> {
-  int itemCount = 1;
+   CartItem({super.key,required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +23,7 @@ class _CartItemState extends State<CartItem> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         child: Container(
-          height: 142.h,
+          height: 145.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.r),
             border: Border.all(color: AppColors.primary30Opacity, width: 1),
@@ -70,7 +66,7 @@ class _CartItemState extends State<CartItem> {
           height: 145.h,
           fit: BoxFit.cover,
           imageUrl:
-              "https://www.nike.sa/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw42ccc9ea/nk/a9b/7/6/4/b/1/a9b764b1_834c_413e_aec2_f460112b2de6.jpg?sw=2000&sh=2000&sm=fit",
+          product.product!.imageCover??"",
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(
               color: AppColors.yellowColor,
@@ -89,7 +85,7 @@ class _CartItemState extends State<CartItem> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const CustomTxt(text: "NIKE AIR JORDAN"),
+         CustomTxt(text: product.product!.title??"" ),
         InkWell(
           onTap: () {
             // TODO: delete item from cart
@@ -112,11 +108,11 @@ class _CartItemState extends State<CartItem> {
           radius: 10.r,
         ),
         SizedBox(width: 10.w),
-        CustomTxt(
-          text: "black | size 40",
-          fontColor: AppColors.blackColor.withOpacity(0.4),
-          fontSize: 14.sp,
-        ),
+        // CustomTxt(
+        //   text: product.product.,
+        //   fontColor: AppColors.blackColor.withOpacity(0.4),
+        //   fontSize: 14.sp,
+        // ),
       ],
     );
   }
@@ -126,16 +122,16 @@ class _CartItemState extends State<CartItem> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomTxt(
-          text: "Egp 3,500",
+          text: product.product!.price.toString(),
           fontWeight: FontWeight.bold,
           fontSize: 18.sp,
         ),
-        _buildQuantityControl(),
+        _buildQuantityControl(product.count!.toInt()),
       ],
     );
   }
 
-  Widget _buildQuantityControl() {
+  Widget _buildQuantityControl(int count) {
     return Container(
       height: 50.h,
       decoration: BoxDecoration(
@@ -147,11 +143,11 @@ class _CartItemState extends State<CartItem> {
         children: [
           IconButton(
             onPressed: () {
-              if (itemCount > 1) {
-                setState(() {
-                  itemCount--;
-                });
-              }
+              // if (itemCount > 1) {
+              //   setState(() {
+              //     itemCount--;
+              //   });
+              // }
             },
             icon: Icon(
               Icons.remove_circle_outline_rounded,
@@ -160,16 +156,16 @@ class _CartItemState extends State<CartItem> {
             ),
           ),
           CustomTxt(
-            text: "$itemCount",
+            text: count.toString(),
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
             fontColor: AppColors.whiteColor,
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                itemCount++;
-              });
+              // setState(() {
+              //   itemCount++;
+              // });
             },
             icon: Icon(
               Icons.add_circle_outline_rounded,
