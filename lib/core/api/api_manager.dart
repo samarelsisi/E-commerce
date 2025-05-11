@@ -26,4 +26,18 @@ class ApiManager {
 
     );
   }
+  Future <Response>deleteData(
+      {required String endPoint,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        Object? body,
+        Map<String, dynamic>? headers}) {
+
+    return dio.delete(ApiConstant.baseUrl + endPoint,
+      queryParameters: queryParameters,
+      options: Options(headers: headers,validateStatus: (status)=>true),
+      data: body,
+
+    );
+  }
 }

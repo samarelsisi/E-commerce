@@ -32,6 +32,7 @@ import '../domain/repositories/home/home_repository.dart' as _i855;
 import '../domain/repositories/repositories/auth_repositories.dart' as _i92;
 import '../domain/repositories/repositories/cart/cart-repository.dart' as _i687;
 import '../domain/usecases/add_cart_usecase.dart' as _i443;
+import '../domain/usecases/delete_items_In_cart_usecase.dart' as _i453;
 import '../domain/usecases/get_all_brands_usecase.dart' as _i808;
 import '../domain/usecases/get_all_category_usecase.dart' as _i74;
 import '../domain/usecases/get_all_products_usecase.dart' as _i273;
@@ -97,8 +98,13 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i428.GetCartUseCase>(
         () => _i428.GetCartUseCase(cartRepository: gh<_i687.CartRepository>()));
-    gh.factory<_i157.CartViewModel>(
-        () => _i157.CartViewModel(getCartUseCase: gh<_i428.GetCartUseCase>()));
+    gh.factory<_i453.DeleteItemsInCartUseCase>(() =>
+        _i453.DeleteItemsInCartUseCase(
+            cartRepository: gh<_i687.CartRepository>()));
+    gh.factory<_i157.CartViewModel>(() => _i157.CartViewModel(
+          getCartUseCase: gh<_i428.GetCartUseCase>(),
+          deleteItemsInCartUseCase: gh<_i453.DeleteItemsInCartUseCase>(),
+        ));
     return this;
   }
 }

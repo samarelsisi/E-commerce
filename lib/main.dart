@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:e_commerece_online_c13/core/cached/cache_helper.dart';
+import 'package:e_commerece_online_c13/features/ui/pages/cart_screen/cubit/get_Cart_view_model.dart';
 import 'package:e_commerece_online_c13/features/ui/pages/home_screen/tabs/products_tab/cubit/product_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +32,8 @@ void main() async {
     }
   runApp(MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<ProductViewModel>())
+        BlocProvider(create: (context) => getIt<ProductViewModel>()),
+        BlocProvider(create: (context)=>getIt<CartViewModel>())
       ],
       child: MyApp(routeName: routeName,)));
 }

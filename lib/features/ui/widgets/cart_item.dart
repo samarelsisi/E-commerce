@@ -1,18 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerece_online_c13/domain/entities/GetCartResponeEntity.dart';
+import 'package:e_commerece_online_c13/features/ui/pages/cart_screen/cubit/get_Cart_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_routes.dart';
 import 'custom_txt.dart';
 
 class CartItem extends StatelessWidget {
   GetProductsEntity product;
-
    CartItem({super.key,required this.product});
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -37,9 +35,9 @@ class CartItem extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
                   child: Column(
                     children: [
-                      _buildItemHeader(),
+                      _buildItemHeader(context),
                       SizedBox(height: 5.h),
-                      _buildItemDetails(),
+                      // _buildItemDetails(),
                       SizedBox(height: 5.h),
                       _buildItemPrice(),
                     ],
@@ -81,14 +79,17 @@ class CartItem extends StatelessWidget {
     );
   }
 
-  Widget _buildItemHeader() {
+  Widget _buildItemHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-         CustomTxt(text: product.product!.title??"" ),
+         Container(
+             width:140.w,
+             child: CustomTxt(text: product.product!.title??"" ,)),
         InkWell(
           onTap: () {
-            // TODO: delete item from cart
+            print(product.product!.id);
+            CartViewModel.get(context).deleteItemsInCart(product.product!.id??"");
           },
           child: Icon(
             CupertinoIcons.delete,
@@ -122,7 +123,7 @@ class CartItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomTxt(
-          text: product.product!.price.toString(),
+          text: product.price.toString(),
           fontWeight: FontWeight.bold,
           fontSize: 18.sp,
         ),

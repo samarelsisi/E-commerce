@@ -1,5 +1,6 @@
  import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
+import 'package:e_commerece_online_c13/core/api/api_constant.dart';
 import 'package:e_commerece_online_c13/core/api/api_manager.dart';
 import 'package:e_commerece_online_c13/core/api/end_points.dart';
 import 'package:e_commerece_online_c13/core/cached/cache_helper.dart';
@@ -13,24 +14,26 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   @override
   ApiManager apiManager;
   CartRemoteDataSourceImpl({required this.apiManager});
+  var token=SharedPrefernceUtlis.getData(key: "token");
+
+  Object? get respnse => null;
 
   Future<Either<Failures, GetCartResponeEntity>> getItemsInCart() async{
-    var token=SharedPrefernceUtlis.getData(key: "token");
-
     var response=await  apiManager.getData(endPoint: EndPoints.addToCart,
 
     headers: {
       'token':token
     });
+    print(response);
     try{
       final List<ConnectivityResult> connectivityResult=await Connectivity().checkConnectivity();
       if(connectivityResult.contains(ConnectivityResult.wifi)||connectivityResult.contains(ConnectivityResult.mobile)){
-        var getCartItems=GetCartResponseDm.fromJson(response.data);//convert response to object
+        var deleteItemsInCart=GetCartResponseDm.fromJson(response.data);//convert response to object
         if(response.statusCode!>=200&&response.statusCode!<300){
-          return Right(getCartItems);
+          return Right(deleteItemsInCart);
         }
         else{
-          return Left(ServerError(errorMsg: getCartItems.message!));
+          return Left(ServerError(errorMsg: deleteItemsInCart.message!));
         }
       }
       else{
@@ -41,6 +44,42 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
     catch(e){
       return Left(Failures(errorMsg: e.toString()));
     }
+  }
+
+  @override
+  Future<Either<Failures, GetCartResponseDm>> deleteItemsInCart(
+      String productId) async {
+    try {
+      final List<ConnectivityResult> connectivityResult =
+      await Connectivity().checkConnectivity();
+      if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.mobile)) {
+        //todo: internet
+        var token = SharedPrefernceUtlis.getData(key: 'token');
+        var response = await apiManager.deleteData(
+            endPoint: '${EndPoints.addToCart}/$productId',
+            headers: {'token': token});
+        print(response);
+        var getCartResponse = GetCartResponseDm.fromJson(response.data);
+        if (response.statusCode! >= 200 && response.statusCode! < 300) {
+          return Right(getCartResponse);
+        } else {
+          return Left(ServerError(errorMsg: getCartResponse.message!));
+        }
+      } else {
+        //todo : no internet connection
+        return Left(NetworkError(
+            errorMsg: 'No Internet Connection, Please Check Internet.'));
+      }
+    } catch (e) {
+      print(e);
+      return Left(Failures(errorMsg: e.toString()));
+    }}
+
+  @override
+  Future<Either<Failures, GetCartResponeEntity>> updateCountInCart(String productId, String count) {
+    // TODO: implement updateCountInCart
+    throw UnimplementedError();
   }
 
 }

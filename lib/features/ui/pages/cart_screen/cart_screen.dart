@@ -12,7 +12,7 @@ import '../../widgets/custom_txt.dart';
 
 class CartScreen extends StatelessWidget {
   static const String routeName = "CartItems";
-  CartViewModel viewModel = getIt<CartViewModel>();
+  // CartViewModel viewModel = getIt<CartViewModel>();
 
   CartScreen({super.key});
 
@@ -21,7 +21,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
         appBar: _customAppBar(context),
         body: BlocBuilder<CartViewModel,CartStates>(
-          bloc: viewModel ..getItemInCart(),
+          bloc: CartViewModel.get(context) ..getItemInCart(),
           builder: (context, state) {
             if(state is GetCartSuccessState){
               return  Column(
@@ -41,7 +41,7 @@ class CartScreen extends StatelessWidget {
               return Text(state.errorMessage.errorMsg);
             }
             else{
-              return Center(child: CircularProgressIndicator(color: AppColors.redColor,),);
+              return const Center(child: CircularProgressIndicator(color: AppColors.redColor,),);
             }
           },
 

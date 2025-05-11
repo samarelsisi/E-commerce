@@ -18,3 +18,14 @@ class GetCartErrorStates extends CartStates{
  Failures errorMessage;
  GetCartErrorStates({required this.errorMessage});
 }
+class DeleteItemLoadingStates extends CartStates{
+
+}
+class DeleteItemErrorStates extends CartStates{
+ Failures errorMessage;
+ DeleteItemErrorStates({required this.errorMessage});
+}
+class DeleteItemSuccessStates extends CartStates{
+ GetCartResponeEntity responesEntity;
+ DeleteItemSuccessStates({required this.responesEntity});
+}
