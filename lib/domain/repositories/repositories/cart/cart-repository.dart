@@ -6,6 +6,6 @@ import 'package:injectable/injectable.dart';
 abstract class CartRepository{
   Future<Either<Failures,GetCartResponeEntity>>getItemsInCart();
   Future<Either<Failures,GetCartResponeEntity>>deleteItemsInCart(String productId);
-  Future<Either<Failures,GetCartResponeEntity>>updateCountInCart(String productId,String count);
+  Future<Either<Failures,GetCartResponeEntity>>updateCountInCart(String productId,int count);
 
 }

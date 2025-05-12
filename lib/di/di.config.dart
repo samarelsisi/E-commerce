@@ -39,6 +39,7 @@ import '../domain/usecases/get_all_products_usecase.dart' as _i273;
 import '../domain/usecases/get_cart_usecase.dart' as _i428;
 import '../domain/usecases/login_use_case.dart' as _i646;
 import '../domain/usecases/register_useCase.dart' as _i433;
+import '../domain/usecases/update_count_In_cart_usecase.dart' as _i746;
 import '../features/ui/auth/login/cubit/login_view_model.dart' as _i1040;
 import '../features/ui/auth/register/cubit/register_view_model.dart' as _i586;
 import '../features/ui/pages/cart_screen/cubit/get_Cart_view_model.dart'
@@ -96,14 +97,18 @@ extension GetItInjectableX on _i174.GetIt {
           getAllProductsUseCase: gh<_i273.GetAllProductsUseCase>(),
           addCartUseCase: gh<_i443.AddCartUseCase>(),
         ));
-    gh.factory<_i428.GetCartUseCase>(
-        () => _i428.GetCartUseCase(cartRepository: gh<_i687.CartRepository>()));
     gh.factory<_i453.DeleteItemsInCartUseCase>(() =>
         _i453.DeleteItemsInCartUseCase(
+            cartRepository: gh<_i687.CartRepository>()));
+    gh.factory<_i428.GetCartUseCase>(
+        () => _i428.GetCartUseCase(cartRepository: gh<_i687.CartRepository>()));
+    gh.factory<_i746.UpdateCountInCartUseCase>(() =>
+        _i746.UpdateCountInCartUseCase(
             cartRepository: gh<_i687.CartRepository>()));
     gh.factory<_i157.CartViewModel>(() => _i157.CartViewModel(
           getCartUseCase: gh<_i428.GetCartUseCase>(),
           deleteItemsInCartUseCase: gh<_i453.DeleteItemsInCartUseCase>(),
+          updateCountInCartUseCase: gh<_i746.UpdateCountInCartUseCase>(),
         ));
     return this;
   }

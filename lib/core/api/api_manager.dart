@@ -40,4 +40,15 @@ class ApiManager {
 
     );
   }
+  Future<Response> updateData(
+      {required String endPoint,
+        Map<String, dynamic>? queryParameters,
+        Object? body,
+        Options? options,
+        Map<String, dynamic>? headers}) {
+    return dio.put(ApiConstant.baseUrl + endPoint,
+        data: body,
+        queryParameters: queryParameters,
+        options: Options(headers: headers, validateStatus: (status) => true));
+  }
 }

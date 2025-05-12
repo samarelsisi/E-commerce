@@ -22,9 +22,9 @@ class CartRepositoryImpl implements CartRepository{
   }
 
   @override
-  Future<Either<Failures, GetCartResponeEntity>> updateCountInCart(String productId, String count) {
-    // TODO: implement updateCountInCart
-    throw UnimplementedError();
+  Future<Either<Failures, GetCartResponeEntity>> updateCountInCart(String productId, int count) async{
+    var either=await cartRemoteDataSource.updateCountInCart(productId,count);
+    return either.fold((error)=>Left(error), (response)=>Right(response));
   }
 
 }

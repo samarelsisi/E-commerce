@@ -59,7 +59,6 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
         var response = await apiManager.deleteData(
             endPoint: '${EndPoints.addToCart}/$productId',
             headers: {'token': token});
-        print(response);
         var getCartResponse = GetCartResponseDm.fromJson(response.data);
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
           return Right(getCartResponse);
@@ -72,14 +71,38 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
             errorMsg: 'No Internet Connection, Please Check Internet.'));
       }
     } catch (e) {
-      print(e);
       return Left(Failures(errorMsg: e.toString()));
     }}
 
   @override
-  Future<Either<Failures, GetCartResponeEntity>> updateCountInCart(String productId, String count) {
-    // TODO: implement updateCountInCart
-    throw UnimplementedError();
+  Future<Either<Failures, GetCartResponseDm>> updateCountInCart(String productId, int count) async{
+    try {
+      final List<ConnectivityResult> connectivityResult =
+          await Connectivity().checkConnectivity();
+      if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.mobile)) {
+        //todo: internet
+        var token = SharedPrefernceUtlis.getData(key: 'token');
+        var response = await apiManager.updateData(
+            endPoint: '${EndPoints.addToCart}/$productId',
+            body: {
+              "count":"$count"
+            },
+            headers: {'token': token});
+        var getCartResponse = GetCartResponseDm.fromJson(response.data);
+        if (response.statusCode! >= 200 && response.statusCode! < 300) {
+          return Right(getCartResponse);
+        } else {
+          return Left(ServerError(errorMsg: getCartResponse.message!));
+        }
+      } else {
+        //todo : no internet connection
+        return Left(NetworkError(
+            errorMsg: 'No Internet Connection, Please Check Internet.'));
+      }
+    } catch (e) {
+      return Left(Failures(errorMsg: e.toString()));
+    }
   }
 
 }

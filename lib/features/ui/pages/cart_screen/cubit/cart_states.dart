@@ -29,3 +29,16 @@ class DeleteItemSuccessStates extends CartStates{
  GetCartResponeEntity responesEntity;
  DeleteItemSuccessStates({required this.responesEntity});
 }
+class UpdateCountInCartLoadingState extends CartStates {}
+
+class UpdateCountInCartErrorState extends CartStates {
+ Failures failures;
+
+ UpdateCountInCartErrorState({required this.failures});
+}
+
+class UpdateCountInCartSuccessState extends CartStates {
+ GetCartResponeEntity responesEntity;
+
+ UpdateCountInCartSuccessState({required this.responesEntity});
+}

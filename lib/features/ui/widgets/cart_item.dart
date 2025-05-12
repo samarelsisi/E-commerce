@@ -10,7 +10,9 @@ import 'custom_txt.dart';
 
 class CartItem extends StatelessWidget {
   GetProductsEntity product;
-   CartItem({super.key,required this.product});
+
+  CartItem({super.key, required this.product});
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -39,7 +41,7 @@ class CartItem extends StatelessWidget {
                       SizedBox(height: 5.h),
                       // _buildItemDetails(),
                       SizedBox(height: 5.h),
-                      _buildItemPrice(),
+                      _buildItemPrice(context),
                     ],
                   ),
                 ),
@@ -63,8 +65,7 @@ class CartItem extends StatelessWidget {
           width: 130.w,
           height: 145.h,
           fit: BoxFit.cover,
-          imageUrl:
-          product.product!.imageCover??"",
+          imageUrl: product.product!.imageCover ?? "",
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(
               color: AppColors.yellowColor,
@@ -83,13 +84,16 @@ class CartItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-         Container(
-             width:140.w,
-             child: CustomTxt(text: product.product!.title??"" ,)),
+        Container(
+            width: 140.w,
+            child: CustomTxt(
+              text: product.product!.title ?? "",
+            )),
         InkWell(
           onTap: () {
             print(product.product!.id);
-            CartViewModel.get(context).deleteItemsInCart(product.product!.id??"");
+            CartViewModel.get(context)
+                .deleteItemsInCart(product.product!.id ?? "");
           },
           child: Icon(
             CupertinoIcons.delete,
@@ -118,7 +122,7 @@ class CartItem extends StatelessWidget {
     );
   }
 
-  Widget _buildItemPrice() {
+  Widget _buildItemPrice(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -127,12 +131,12 @@ class CartItem extends StatelessWidget {
           fontWeight: FontWeight.bold,
           fontSize: 18.sp,
         ),
-        _buildQuantityControl(product.count!.toInt()),
+        _buildQuantityControl(product.count!.toInt(),context),
       ],
     );
   }
 
-  Widget _buildQuantityControl(int count) {
+  Widget _buildQuantityControl(int count, BuildContext context) {
     return Container(
       height: 50.h,
       decoration: BoxDecoration(
@@ -144,11 +148,10 @@ class CartItem extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              // if (itemCount > 1) {
-              //   setState(() {
-              //     itemCount--;
-              //   });
-              // }
+              int count = product.count!.toInt();
+              count--;
+              CartViewModel.get(context)
+                  .updateCountInCart(product.product?.id ?? "", count);
             },
             icon: Icon(
               Icons.remove_circle_outline_rounded,
@@ -164,9 +167,11 @@ class CartItem extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              // setState(() {
-              //   itemCount++;
-              // });
+              //todo: increment count
+              int count = product.count!.toInt();
+              count++;
+              CartViewModel.get(context)
+                  .updateCountInCart(product.product?.id ?? "", count);
             },
             icon: Icon(
               Icons.add_circle_outline_rounded,
