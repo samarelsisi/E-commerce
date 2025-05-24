@@ -150,7 +150,7 @@ HomeViewModel viewModel=HomeViewModel();
                                 color: AppColors.primaryColor.withOpacity(0.75),
                               ))),
                     ),
-                    const CustomAppBarBadge(count: 5)
+                     CustomAppBarBadge()
                   ],
                 ),
               ),

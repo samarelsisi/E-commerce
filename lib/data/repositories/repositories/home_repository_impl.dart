@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerece_online_c13/core/errors/failures.dart';
+import 'package:e_commerece_online_c13/domain/entities/AddToCartResponseEntity.dart';
 import 'package:e_commerece_online_c13/domain/entities/CategoryResponseEntity.dart';
+import 'package:e_commerece_online_c13/domain/entities/ProductResponseEntity.dart';
 import 'package:e_commerece_online_c13/domain/repositories/dataSourses/remoteDataSource/home_remote_data_source.dart';
 import 'package:e_commerece_online_c13/domain/repositories/home/home_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -18,6 +20,19 @@ class HomeRepositoryImpl implements HomeRepository{
   Future<Either<Failures, CategoryOrBrandResponseEntity>> getAllBrands() async{
     var either=await homeRemoteDataSource.getAllBrands();
     return either.fold((error)=>Left(error), (response)=>Right(response));
+  }
+
+  @override
+  Future<Either<Failures, ProductResponseEntity>> getAllProducts() async {
+    var either = await homeRemoteDataSource.getAllProducts();
+    return either.fold((error) => Left(error), (response) => Right(response));
+  }
+
+  @override
+  Future<Either<Failures, AddToCartResponseEntity>> addToCart(String productId) async{
+    var either = await homeRemoteDataSource.addToCart(productId);
+    return either.fold((error) => Left(error), (response) => Right(response));
+
   }
 
 }
