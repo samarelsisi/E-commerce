@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerece_online_c13/domain/entities/ProductResponseEntity.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,7 @@ import '../../../core/utils/app_styles.dart';
 import 'custom_elevated_button.dart';
 
 class FavoriteItem extends StatefulWidget {
-  final Map<String, dynamic> product;
+  ProductEntity product;
   String heartIcon = AppAssets.selectedFavouriteIcon;
   bool isClicked = false;
 
@@ -54,7 +55,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
                     width: 120.w,
                     height: 135.h,
                     fit: BoxFit.cover,
-                    imageUrl: widget.product["imageUrl"],
+                    imageUrl: widget.product.imageCover!??'',
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(
                         color: AppColors.primaryColor,
@@ -78,7 +79,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AutoSizeText(
-                            widget.product["title"],
+                            widget.product.title!??"",
                             style: AppStyles.medium18Header,
                           ),
                           InkWell(
@@ -110,34 +111,34 @@ class _FavoriteItemState extends State<FavoriteItem> {
                           ),
                         ],
                       ),
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       margin: EdgeInsets.only(right: 10.w),
+                      //       width: 14.w,
+                      //       height: 14.h,
+                      //       decoration: BoxDecoration(
+                      //         color: widget.product.,
+                      //         shape: BoxShape.circle,
+                      //       ),
+                      //     ),
+                      //     AutoSizeText(
+                      //       (widget.product["color"] as Color).colorName,
+                      //       style: AppStyles.regular14Text,
+                      //     )
+                      //   ],
+                      // ),
                       Row(
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 10.w),
-                            width: 14.w,
-                            height: 14.h,
-                            decoration: BoxDecoration(
-                              color: widget.product["color"],
-                              shape: BoxShape.circle,
-                            ),
-                          ),
                           AutoSizeText(
-                            (widget.product["color"] as Color).colorName,
-                            style: AppStyles.regular14Text,
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          AutoSizeText(
-                            "EGP ${widget.product["finalPrice"]}",
+                            "EGP ${widget.product.price}",
                             style: AppStyles.medium18Header,
                           ),
                           SizedBox(
                             width: 8.w,
                           ),
                           AutoSizeText(
-                            "EGP${widget.product["salePrice"]}",
+                            "EGP${widget.product.price}",
                             style: AppStyles.regular11SalePrice.copyWith(
                                 decoration: TextDecoration.lineThrough),
                           ),

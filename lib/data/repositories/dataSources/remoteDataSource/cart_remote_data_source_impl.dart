@@ -19,8 +19,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   Object? get respnse => null;
 
   Future<Either<Failures, GetCartResponeEntity>> getItemsInCart() async{
-    var response=await  apiManager.getData(endPoint: EndPoints.addToCart,
-
+    var response=await apiManager.getData(endPoint: EndPoints.addToCart,
     headers: {
       'token':token
     });

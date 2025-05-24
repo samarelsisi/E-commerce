@@ -1,5 +1,4 @@
 import 'package:e_commerece_online_c13/data/models/CategoryResponseDM.dart';
-import 'package:e_commerece_online_c13/domain/entities/CategoryResponseEntity.dart';
 import 'package:e_commerece_online_c13/domain/entities/ProductResponseEntity.dart';
 
 /// results : 56

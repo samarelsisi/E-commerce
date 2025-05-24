@@ -9,15 +9,10 @@ class ProductResponseEntity {
       this.results, 
       this.metadata, 
       this.data,});
-
-
   num? results;
   ProductMetadataEntity? metadata;
   List<ProductEntity>? data;
-
 }
-
-
 class ProductEntity {
   ProductEntity({
       this.sold, 
@@ -32,8 +27,7 @@ class ProductEntity {
       this.imageCover, 
       this.category, 
       this.brand, 
-      this.ratingsAverage, 
-
+      this.ratingsAverage,
       this.id,});
 
   num? sold;
@@ -55,8 +49,6 @@ class ProductEntity {
 
 }
 
-
-
 class SubcategoryEntity {
   SubcategoryEntity({
       this.id, 
@@ -75,14 +67,7 @@ class SubcategoryEntity {
   String? slug;
   String? category;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['_id'] = id;
-    map['name'] = name;
-    map['slug'] = slug;
-    map['category'] = category;
-    return map;
-  }
+
 
 }
 
